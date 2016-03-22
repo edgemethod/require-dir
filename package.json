@@ -1,0 +1,70 @@
+{
+  "_args": [
+    [
+      "require-dir@git://github.com/bondden/requireDir.git",
+      "/Users/alvin/artery/getalloy.com"
+    ]
+  ],
+  "_from": "git://github.com/bondden/requireDir.git",
+  "_id": "require-dir@0.3.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/require-dir",
+  "_phantomChildren": {},
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/bondden/requireDir/master/package.json",
+      "gitUrl": "git://github.com/bondden/requireDir.git",
+      "httpsUrl": "git+https://github.com/bondden/requireDir.git",
+      "shortcut": "github:bondden/requireDir",
+      "ssh": "git@github.com:bondden/requireDir.git",
+      "sshUrl": "git+ssh://git@github.com/bondden/requireDir.git",
+      "type": "github"
+    },
+    "name": "require-dir",
+    "raw": "require-dir@git://github.com/bondden/requireDir.git",
+    "rawSpec": "git://github.com/bondden/requireDir.git",
+    "scope": null,
+    "spec": "git://github.com/bondden/requireDir.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git://github.com/bondden/requireDir.git#ddf0a3b8bdae7c335bef76670de73ff447e7a859",
+  "_shasum": "c1fed4013e7fe02614431cb96d23fbe18b59902d",
+  "_shrinkwrap": null,
+  "_spec": "require-dir@git://github.com/bondden/requireDir.git",
+  "_where": "/Users/alvin/artery/getalloy.com",
+  "author": {
+    "email": "aseem.kishore@gmail.com",
+    "name": "Aseem Kishore"
+  },
+  "bugs": {
+    "url": "https://github.com/aseemk/requireDir/issues"
+  },
+  "dependencies": {},
+  "description": "Helper to require() directories.",
+  "devDependencies": {
+    "coffee-script": "~1.3.3",
+    "mkdirp": "^0.5.0"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "gitHead": "ddf0a3b8bdae7c335bef76670de73ff447e7a859",
+  "homepage": "https://github.com/aseemk/requireDir",
+  "license": "MIT",
+  "name": "require-dir",
+  "optionalDependencies": {},
+  "readme": "[![Build Status](https://travis-ci.org/aseemk/requireDir.svg?branch=master)](https://travis-ci.org/aseemk/requireDir)\n[![npm version](https://badge.fury.io/js/require-dir.svg)](http://badge.fury.io/js/require-dir)\n\n# requireDir()\n\nNode helper to `require()` directories. The directory's files are examined,\nand each one that can be `require()`'d is `require()`'d and returned as part\nof a hash from that file's basename to its exported contents.\n\n## Example\n\nGiven this directory structure:\n\n```\ndir\n+ a.js\n+ b.json\n+ c.coffee\n+ d.txt\n```\n\n`requireDir('./dir')` will return the equivalent of:\n\n```js\n{ a: require('./dir/a.js')\n, b: require('./dir/b.json')\n}\n```\n\nAnd if CoffeeScript has been registered via `require('coffee-script/register')`,\n`c.coffee` will also be returned.\n\n## Installation\n\n```\nnpm install require-dir\n```\n\nNote that this package is *not* `requireDir` — turns out that's already\n[taken](https://github.com/JamesEggers1/node-requiredir)! ;)\n\n## Usage\n\nBasic usage that examines only directories' immediate files:\n\n```js\nvar requireDir = require('require-dir');\nvar dir = requireDir('./path/to/dir');\n```\n\nYou can optionally customize the behavior by passing an extra options object:\n\n```js\nvar dir = requireDir('./path/to/dir', {recurse: true});\n```\n\n## Options\n\n`recurse`: Whether to recursively `require()` subdirectories too.\n(`node_modules` within subdirectories will be ignored.)\nDefault is false.\n\n`camelcase`: Automatically add camelcase aliases for files with dash- and\nunderscore-separated names. E.g. `foo-bar.js` will be exposed under both the\noriginal `'foo-bar'` name as well as a `'fooBar'` alias. Default is false.\n\n`duplicates`: By default, if multiple files share the same basename, only the\nhighest priority one is `require()`'d and returned. (Priority is determined by\nthe order of `require.extensions` keys, with directories taking precedence\nover files if `recurse` is true.) Specifying this option `require()`'s all\nfiles and returns full filename keys in addition to basename keys.\nDefault is false.\n\nE.g. in the example above, if there were also an `a.json`, the behavior would\nbe the same by default, but specifying `duplicates: true` would yield:\n\n```js\n{ a: require('./dir/a.js')\n, 'a.js': require('./dir/a.js')\n, 'a.json': require('./dir/a.json')\n, b: require('./dir/b.json')\n, 'b.json': require('./dir/b.json')\n}\n```\n`ignore`: `string RegExp | Array(string RegExp[, string RegExp...])` - a pattern,\nor an array of patterns, used to exclude files, matching them.\nFormat of a pattern: `string` or `string` representation of JS `RegExp`. Examples:\n\n- `ignore: \".tst.js\"` - excludes files like \"foo.tst.js\" or any other, having \".tst.js\"\nin it's path.\n- `ignore: [\".tst.js\",\".es6.js\"]` - excludes files like \"foo.tst.js\" or \"foo.es6.js\" or any other,\nhaving the patterns in it's path.\n\nThere might be more options in the future. ;)\n\n## Tips\n\nIf you want to `require()` the same directory in multiple places, you can do\nthis in the directory itself! Just make an `index.js` file with the following:\n\n```js\nmodule.exports = require('require-dir')();   // defaults to '.'\n```\n\nAnd don't worry, the calling file is always ignored to prevent infinite loops.\n\n## TODO\n\nIt'd be awesome if this could work with the regular `require()`, e.g. like a\nregular `require()` hook. Not sure that's possible though; directories are\nalready special-cased to look for an `index` file or `package.json`.\n\nAn `ignore` option would be nice: a string or regex, or an array of either or\nboth, of paths, relative to the directory, to ignore. String paths can be\nextensionless to ignore all extensions for that path. Supporting shell-style\nglobs in string paths would be nice.\n\nCurrently, basenames are derived for directories too — e.g. a directory named\n`a.txt` will be returned as `a` when recursing — but should that be the case?\nMaybe directories should always be returned by their full name, and/or maybe\nthis behavior should be customizable. This is hopefully an edge case.\n\n## License\n\nMIT. &copy; 2012-2015 Aseem Kishore.\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aseemk/requireDir.git"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "version": "0.3.0"
+}
