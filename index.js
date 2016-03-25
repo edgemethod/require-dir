@@ -4,6 +4,7 @@
 var FS = require('fs');
 var Path = require('path');
 var requireJade = require("require-jade");
+var jade = require("jade");
 console.log(require.extensions);
 
 // make a note of the calling file's path, so that we can resolve relative
@@ -143,9 +144,13 @@ module.exports = function requireDir(dir, opts) {
                         map[base] = map[file];
                     }
                 } else {
-                  if (ext == '.jade') map[base + ext] = true;
-                    else map[base] = require(path);
-                    break;
+                  if (ext == '.jade') { 
+                    map[base + ext] = FS.readFileSync(path, { encoding: 'utf8' });
+                    //jade.compileFile(path, {name: Path.basename(path,'.jade') + "ViewTemplate"});
+                    //
+                  }
+                  else map[base] = require(path);
+                  break;
                 }
             }
         }
