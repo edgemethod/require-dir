@@ -5,7 +5,7 @@ var FS = require('fs');
 var Path = require('path');
 var requireJade = require("require-jade");
 var jade = require("jade");
-console.log(require.extensions);
+//console.log(require.extensions);
 
 // make a note of the calling file's path, so that we can resolve relative
 // paths. this only works if a fresh version of this module is run on every
