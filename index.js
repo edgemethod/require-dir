@@ -3,8 +3,7 @@
 
 var FS = require('fs');
 var Path = require('path');
-var requireJade = require("require-jade");
-var jade = require("jade");
+
 require.extensions['.jade'] = true;
 require.extensions.['.pug'] = true;
 require.extensions.['.jpg'] = true;
