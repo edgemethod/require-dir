@@ -5,11 +5,11 @@ var FS = require('fs');
 var Path = require('path');
 var requireJade = require("require-jade");
 var jade = require("jade");
-require.extensions.push('.jade');
-require.extensions.push('.pug');
-require.extensions.push('.jpg');
-require.extensions.push('.png');
-require.extensions.push('.gif');
+require.extensions['.jade'] = true;
+require.extensions.['.pug'] = true;
+require.extensions.['.jpg'] = true;
+require.extensions.['.png'] = true;
+require.extensions.['.gif'] = true;
 
 //console.log(require.extensions);
 
