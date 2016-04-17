@@ -5,6 +5,11 @@ var FS = require('fs');
 var Path = require('path');
 var requireJade = require("require-jade");
 var jade = require("jade");
+
+require.extensions.push('.jpg');
+require.extensions.push('.png');
+require.extensions.push('.gif');
+
 //console.log(require.extensions);
 
 // make a note of the calling file's path, so that we can resolve relative
@@ -148,6 +153,9 @@ module.exports = function requireDir(dir, opts) {
                     map[base + ext] = FS.readFileSync(path, { encoding: 'utf8' });
                     //jade.compileFile(path, {name: Path.basename(path,'.jade') + "ViewTemplate"});
                     //
+                  }
+                  else if (ext == '.jpg' || ext == '.png' || ext == '.gif') {
+                    map[base + ext] = 'image';
                   }
                   else map[base] = require(path);
                   break;
