@@ -5,10 +5,10 @@ var FS = require('fs');
 var Path = require('path');
 
 require.extensions['.jade'] = true;
-require.extensions.['.pug'] = true;
-require.extensions.['.jpg'] = true;
-require.extensions.['.png'] = true;
-require.extensions.['.gif'] = true;
+require.extensions['.pug'] = true;
+require.extensions['.jpg'] = true;
+require.extensions['.png'] = true;
+require.extensions['.gif'] = true;
 
 //console.log(require.extensions);
 
