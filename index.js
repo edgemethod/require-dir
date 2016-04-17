@@ -5,7 +5,8 @@ var FS = require('fs');
 var Path = require('path');
 var requireJade = require("require-jade");
 var jade = require("jade");
-
+require.extensions.push('.jade');
+require.extensions.push('.pug');
 require.extensions.push('.jpg');
 require.extensions.push('.png');
 require.extensions.push('.gif');
@@ -149,7 +150,7 @@ module.exports = function requireDir(dir, opts) {
                         map[base] = map[file];
                     }
                 } else {
-                  if (ext == '.jade') { 
+                  if (ext == '.jade' || ext == '.pug') { 
                     map[base + ext] = FS.readFileSync(path, { encoding: 'utf8' });
                     //jade.compileFile(path, {name: Path.basename(path,'.jade') + "ViewTemplate"});
                     //
